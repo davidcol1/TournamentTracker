@@ -61,5 +61,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlScripts\01-TournamentTrackerCreateTablesScript.sql" />
+    <Content Include="SqlScripts\02-TournamentTrackerCreateStoredProcsScript.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

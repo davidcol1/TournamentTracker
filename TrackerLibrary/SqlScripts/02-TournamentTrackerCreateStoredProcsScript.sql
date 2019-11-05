@@ -144,3 +144,24 @@ begin
   select @id = SCOPE_IDENTITY();
 end
 go
+
+if object_id('spPeople_Insert', 'P') is not null
+  drop proc spPeople_Insert
+go
+
+create procedure spPeople_Insert
+  @FirstName varchar(100),
+  @LastName varchar(100),
+  @EmailAddress varchar(100),
+  @CellPhoneNumber varchar(100),
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into People (FirstName, LastName, EmailAddress, CellPhoneNumber)
+  values (@FirstName, @LastName, @EmailAddress, @CellPhoneNumber)
+
+  select @id = SCOPE_IDENTITY();
+end
+go

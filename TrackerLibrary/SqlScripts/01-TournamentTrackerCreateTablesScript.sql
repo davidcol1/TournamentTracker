@@ -1,10 +1,17 @@
 use Tournaments;
 go
 
+drop table if exists Teams
+go
+
 create table Teams (
 id int identity (1,1) not null primary key,
 TeamName varchar(100) not null
 );
+go
+
+
+drop table if exists People
 go
 
 create table People (
@@ -12,8 +19,11 @@ id int identity (1,1) not null primary key,
 FirstName varchar(100) not null,
 LastName varchar(100) not null,
 EmailAddress varchar(100) not null,
-CellphoneNumber varchar(100) not null
+CellPhoneNumber varchar(100) not null
 );
+go
+
+drop table if exists TeamMembers
 go
 
 create table TeamMembers (
@@ -25,12 +35,18 @@ foreign key (PersonId) references People(id)
 );
 go
 
+drop table if exists Matchups
+go
+
 create table Matchups (
 id int identity (1,1) not null primary key,
 WinnerId int not null,
 MatchupRound int not null,
 foreign key (WinnerId) references Teams(id)
 );
+go
+
+drop table if exists MatchupEntries
 go
 
 create table MatchupEntries (
@@ -45,11 +61,17 @@ foreign key (TeamCompeteingId) references Teams (id)
 );
 go
 
+drop table if exists Tournaments
+go
+
 create table Tournaments (
 id int identity (1,1) not null primary key,
 TournamentName varchar(100) not null,
 EntryFee money not null
 );
+go
+
+drop table if exists TournamentEntries
 go
 
 create table TournamentEntries (
@@ -61,6 +83,9 @@ foreign key (TeamId) references Teams (id)
 );
 go
 
+drop table if exists Prizes
+go
+
 create table Prizes (
 id int identity (1,1) not null primary key,
 PlaceNumber int not null,
@@ -68,6 +93,9 @@ PlaceName varchar(100) not null,
 PrizeAmount money not null default 0,
 PrizePercentage float not null default 0
 );
+go
+
+drop table if exists TournamentPrizes
 go
 
 create table TournamentPrizes (

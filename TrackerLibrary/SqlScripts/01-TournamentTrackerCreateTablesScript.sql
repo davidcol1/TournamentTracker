@@ -20,8 +20,8 @@ create table TeamMembers (
 id int identity (1,1) not null primary key,
 TeamId int not null,
 PersonId int not null,
-foreign key (TeamId) references Teams(id),
-foreign key (PersonId) references People(id)
+foreign key (TeamId) references Teams(id) ON DELETE CASCADE ON UPDATE CASCADE,
+foreign key (PersonId) references People(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 go
 
@@ -29,7 +29,7 @@ create table Matchups (
 id int identity (1,1) not null primary key,
 WinnerId int not null,
 MatchupRound int not null,
-foreign key (WinnerId) references Teams(id)
+foreign key (WinnerId) references Teams(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 go
 
@@ -39,9 +39,9 @@ MatchupId int not null,
 ParentMatchupId int not null,
 TeamCompeteingId int not null,
 Score int not null,
-foreign key (MatchupId) references Matchups (id),
-foreign key (ParentMatchupId) references Matchups (id),
-foreign key (TeamCompeteingId) references Teams (id)
+foreign key (MatchupId) references Matchups (id) ON DELETE CASCADE ON UPDATE CASCADE,
+foreign key (ParentMatchupId) references Matchups (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+foreign key (TeamCompeteingId) references Teams (id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 go
 
@@ -56,8 +56,8 @@ create table TournamentEntries (
 id int identity (1,1) not null primary key,
 TournamentId int not null,
 TeamId int not null,
-foreign key (TournamentId) references Tournaments (id),
-foreign key (TeamId) references Teams (id)
+foreign key (TournamentId) references Tournaments (id) ON DELETE CASCADE ON UPDATE CASCADE,
+foreign key (TeamId) references Teams (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 go
 
@@ -74,7 +74,7 @@ create table TournamentPrizes (
 id int identity (1,1) not null primary key,
 TournamentId int not null,
 PrizeId int not null,
-foreign key (TournamentId) references Tournaments (id),
-foreign key (PrizeId) references Prizes (id)
+foreign key (TournamentId) references Tournaments (id) ON DELETE CASCADE ON UPDATE CASCADE,
+foreign key (PrizeId) references Prizes (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 go

@@ -12,7 +12,7 @@ id int identity (1,1) not null primary key,
 FirstName varchar(100) not null,
 LastName varchar(100) not null,
 EmailAddress varchar(100) not null,
-CellphoneNumber varchar(100) not null
+CellPhoneNumber varchar(100) not null
 );
 go
 

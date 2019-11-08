@@ -29,6 +29,6 @@ namespace TrackerLibrary.Model
     /// <summary>
     /// The primary cell phone of the person.
     /// </summary>
-    public string CellphoneNumber { get; set; }
+    public string CellPhoneNumber { get; set; }
   }
 }

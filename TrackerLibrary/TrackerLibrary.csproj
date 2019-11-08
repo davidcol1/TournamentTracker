@@ -62,6 +62,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SqlScripts\00-TournamentTrackerDropTablesScript.sql" />
     <Content Include="SqlScripts\01-TournamentTrackerCreateTablesScript.sql" />
     <Content Include="SqlScripts\02-TournamentTrackerCreateStoredProcsScript.sql" />
   </ItemGroup>

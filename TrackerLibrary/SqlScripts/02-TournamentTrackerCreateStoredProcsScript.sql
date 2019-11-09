@@ -165,3 +165,40 @@ begin
   select @id = SCOPE_IDENTITY();
 end
 go
+
+if object_id('spTeams_Insert', 'P') is not null
+  drop proc spTeams_Insert
+go
+
+create procedure spTeams_Insert
+  @TeamName varchar(100),
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into Teams (TeamName)
+  values (@TeamName)
+
+  select @id = SCOPE_IDENTITY();
+end
+go
+
+if object_id('spTeamMembers_Insert', 'P') is not null
+  drop proc spTeamMembers_Insert
+go
+
+create procedure spTeamMembers_Insert
+  @TeamId int,
+  @PersonId int,
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into TeamMembers (TeamId, PersonId)
+  values (@TeamId, @PersonId)
+
+  select @id = SCOPE_IDENTITY();
+end
+go

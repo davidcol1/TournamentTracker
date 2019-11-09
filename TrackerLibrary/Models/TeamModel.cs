@@ -10,16 +10,21 @@ namespace TrackerLibrary.Model
   /// Represents one team in a tournament.
   /// </summary>
   public class TeamModel
-  {
+  {    
     /// <summary>
-    /// A list of Persons that are the members of the team.
+    /// The unique identifier for the team.
     /// </summary>
-    public List<PersonModel> TeamMembers { get; set; } = new List<PersonModel>();
+    public int Id { get; set; }
 
     /// <summary>
     /// The name of the team.
     /// </summary>
     public string TeamName { get; set; }
+
+    /// <summary>
+    /// A list of Persons that are the members of the team.
+    /// </summary>
+    public List<PersonModel> TeamMembers { get; set; } = new List<PersonModel>();
 
   }
 }

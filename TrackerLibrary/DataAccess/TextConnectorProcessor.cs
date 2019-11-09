@@ -12,34 +12,34 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 {
   public static class TextConnectorProcessor
   {
-    public static string FullFilePath( this string fileName )
+    public static string FullFilePath(this string fileName)
     {
       return $"{ConfigurationManager.AppSettings["filePath"]}\\{fileName}";
     }
 
-    public static List<string> LoadFile( this string file )
+    public static List<string> LoadFile(this string file)
     {
-      if ( File.Exists( file ) == false )
+      if (File.Exists(file) == false)
       {
         return new List<string>();
       }
 
-      return File.ReadAllLines( file ).ToList();
+      return File.ReadAllLines(file).ToList();
     }
 
-    public static List<PrizeModel> ConvertToPrizeModels( this List<string> lines )
+    public static List<PrizeModel> ConvertToPrizeModels(this List<string> lines)
     {
       List<PrizeModel> output = new List<PrizeModel>();
 
-      foreach ( string line in lines )
+      foreach (string line in lines)
       {
-        string[] cols = line.Split( ',' );
+        string[] cols = line.Split(',');
         PrizeModel p = new PrizeModel();
-        p.Id = int.Parse( cols[ 0 ] );
-        p.PlaceNumber = int.Parse( cols[ 1 ] );
-        p.PlaceName = cols[ 2 ];
-        p.PrizeAmount = decimal.Parse( cols[ 3 ] );
-        p.PrizePercentage = double.Parse( cols[ 4 ] );
+        p.Id = int.Parse(cols[0]);
+        p.PlaceNumber = int.Parse(cols[1]);
+        p.PlaceName = cols[2];
+        p.PrizeAmount = decimal.Parse(cols[3]);
+        p.PrizePercentage = double.Parse(cols[4]);
         output.Add(p);
       }
 
@@ -66,16 +66,16 @@ namespace TrackerLibrary.DataAccess.TextHelpers
     }
 
 
-    public static void SaveToPrizeFile( this List<PrizeModel> models, string fileName )
+    public static void SaveToPrizeFile(this List<PrizeModel> models, string fileName)
     {
       List<string> lines = new List<string>();
 
-      foreach ( PrizeModel p in models)
+      foreach (PrizeModel p in models)
       {
-          lines.Add($"{p.Id},{p.PlaceNumber},{p.PlaceName},{p.PrizeAmount},{p.PrizePercentage}"  );
+        lines.Add($"{p.Id},{p.PlaceNumber},{p.PlaceName},{p.PrizeAmount},{p.PrizePercentage}");
       }
 
-      File.WriteAllLines(fileName.FullFilePath(),lines);
+      File.WriteAllLines(fileName.FullFilePath(), lines);
     }
 
     public static void SaveToPeopleFile(this List<PersonModel> models, string fileName)
@@ -89,5 +89,65 @@ namespace TrackerLibrary.DataAccess.TextHelpers
 
       File.WriteAllLines(fileName.FullFilePath(), lines);
     }
+
+    public static List<TeamModel> ConvertToTeamModels(this List<string> lines, string peopleFileName)
+    {
+      //id, team name, list of ids: seperated by the pipe
+      //3, Tim's Team, 1|3|5
+
+      List<TeamModel> output = new List<TeamModel>();
+      List<PersonModel> people = peopleFileName.FullFilePath().LoadFile().ConvertToPersonModels();
+
+      foreach (string line in lines)
+      {
+        string[] cols = line.Split(',');
+        TeamModel t = new TeamModel();
+        t.Id = int.Parse(cols[0]);
+        t.TeamName = cols[1];
+
+        string[] personIds = cols[2].Split('|');
+
+        foreach (var id in personIds)
+        {
+          t.TeamMembers.Add(people.Where(x => x.Id == int.Parse(id)).First());
+        }
+      }
+
+      return output;
+    }
+
+    public static void SaveToTeamFile(this List<TeamModel> models, string fileName)
+    {
+      List<string> lines = new List<string>();
+
+      foreach (TeamModel t in models)
+      {
+        lines.Add($"{t.Id},{t.TeamName}, {ConvertPeopleListToString(t.TeamMembers)}");
+      }
+
+      File.WriteAllLines(fileName.FullFilePath(), lines);
+    }
+
+    private static string ConvertPeopleListToString(List<PersonModel> people)
+    {
+      string output = "";
+
+      //2|5|
+
+      if (people.Count == 0)
+      {
+        return "";
+      }
+
+      foreach (var p in people)
+      {
+        output += $"{p.Id}|";
+      }
+
+      output = output.Substring(0, output.Length - 1);
+
+      return output;
+    }
+
   }
 }

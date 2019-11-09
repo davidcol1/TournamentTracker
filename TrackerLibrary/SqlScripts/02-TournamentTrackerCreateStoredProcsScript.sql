@@ -100,10 +100,12 @@ as
 begin
   set nocount on
 
-  select te.*
+  select p.*
   from Teams t
   inner join TeamMembers te
   on te.TeamId = t.Id
+  inner join People p
+  on p.id = te.id
   where t.id = @TeamId
 
 end
@@ -200,5 +202,20 @@ begin
   values (@TeamId, @PersonId)
 
   select @id = SCOPE_IDENTITY();
+end
+go
+
+if object_id('spTeams_GetAll', 'P') is not null
+  drop proc spTeams_GetAll
+go
+
+create procedure spTeams_GetAll
+as
+begin
+  set nocount on
+
+  select *
+  from Teams
+
 end
 go

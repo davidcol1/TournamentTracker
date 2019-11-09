@@ -82,5 +82,10 @@ namespace TrackerLibrary.DataAccess
 
       return model;
     }
+
+    public List<TeamModel> GetTeam_All()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

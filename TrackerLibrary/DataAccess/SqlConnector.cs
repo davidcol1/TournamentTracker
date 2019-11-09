@@ -8,13 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TrackerLibrary.Model;
 
-
-  //@PlaceNumber int,
-  //@PlaceName varchar(100),
-  //@PrizeAmount money,
-  //@PrizePercentage float,
-  //@id int = 0 output
-
 namespace TrackerLibrary.DataAccess
 {
   public class SqlConnector : IDataConnection

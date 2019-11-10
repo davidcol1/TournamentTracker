@@ -1,26 +1,46 @@
---drop table if exists TournamentPrizes;
---go
+--select * from TournamentPrizes;
 
---drop table if exists Prizes;
---go
+--select * from Prizes;
 
---drop table if exists TournamentEntries;
---go
+--select * from TournamentEntries;
 
---drop table if exists Tournaments;
---go
+--select * from Tournaments;
 
---drop table if exists MatchupEntries;
---go
+--select * from MatchupEntries;
 
---drop table if exists Matchups;
---go
+--select * from Matchups;
 
---drop table if exists TeamMembers;
---go
+--select * from TeamMembers;
 
---drop table if exists People;
---go
+--select * from People;
 
---drop table if exists Teams;
---go
+--select * from Teams;
+
+/**************************DANGER BELOW**************************/
+
+----drop table if exists TournamentPrizes;
+----go
+
+----drop table if exists Prizes;
+----go
+
+----drop table if exists TournamentEntries;
+----go
+
+----drop table if exists Tournaments;
+----go
+
+----drop table if exists MatchupEntries;
+----go
+
+----drop table if exists Matchups;
+----go
+
+----drop table if exists TeamMembers;
+----go
+
+----drop table if exists People;
+----go
+
+----drop table if exists Teams;
+----go

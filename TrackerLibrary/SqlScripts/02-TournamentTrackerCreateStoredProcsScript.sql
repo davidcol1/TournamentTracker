@@ -219,3 +219,60 @@ begin
 
 end
 go
+
+if object_id('spTournaments_Insert', 'P') is not null
+  drop proc spTournaments_Insert
+go
+
+create procedure spTournaments_Insert
+  @TournamentName varchar(100),
+  @EntryFee money,
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into Tournaments (TournamentName, EntryFee, IsActive)
+  values (@TournamentName, @EntryFee, 1)
+
+  select @id = SCOPE_IDENTITY();
+end
+go
+
+if object_id('spTournamentEntries_Insert', 'P') is not null
+  drop proc spTournamentEntries_Insert
+go
+
+create procedure spTournamentEntries_Insert
+  @TournamentId int,
+  @TeamId int,
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into TournamentEntries (TournamentId, TeamId)
+  values (@TournamentId, @TeamId)
+
+  select @id = SCOPE_IDENTITY();
+end
+go
+
+if object_id('spTournamentPrizes_Insert', 'P') is not null
+  drop proc spTournamentPrizes_Insert
+go
+
+create procedure spTournamentPrizes_Insert
+  @TournamentId int,
+  @PrizeId int,
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into TournamentPrizes (TournamentId, PrizeId)
+  values (@TournamentId, @PrizeId)
+
+  select @id = SCOPE_IDENTITY();
+end
+go

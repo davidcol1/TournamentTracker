@@ -12,6 +12,11 @@ namespace TrackerLibrary.Model
   public class TournamentModel
   {
     /// <summary>
+    /// The unique identifier for the Tournament.
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// The name of the tournament.
     /// </summary>
     public string TournamentName { get; set; }
@@ -20,6 +25,11 @@ namespace TrackerLibrary.Model
     /// The entry fee paid to get into the tournament.
     /// </summary>
     public decimal EntryFee { get; set; }
+
+    /// <summary>
+    /// The status of the tournament.
+    /// </summary>
+    public bool IsActive { get; set; } = true;
 
     /// <summary>
     /// A list of teams that are in the tournament.

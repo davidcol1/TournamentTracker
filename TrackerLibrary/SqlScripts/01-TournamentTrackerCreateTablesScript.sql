@@ -48,7 +48,8 @@ go
 create table Tournaments (
 id int identity (1,1) not null primary key,
 TournamentName varchar(100) not null,
-EntryFee money not null
+EntryFee money not null,
+IsActive bit not null
 );
 go
 

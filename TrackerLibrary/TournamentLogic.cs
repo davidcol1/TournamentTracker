@@ -32,7 +32,7 @@ namespace TrackerLibrary
       List<MatchupModel> currRound = new List<MatchupModel>();
       MatchupModel currMatchup = new MatchupModel();
 
-      while (round < rounds)
+      while (round <= rounds)
       {
         foreach (MatchupModel match in previousRound)
         {

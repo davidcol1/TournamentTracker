@@ -53,7 +53,7 @@ namespace TrackerUI
 
     private void createMemberButton_Click(object sender, EventArgs e)
     {
-      if ( ValidateForm() )
+      if ( ValidateMember() )
       {
         PersonModel p = new PersonModel();
 
@@ -76,11 +76,11 @@ namespace TrackerUI
       }
       else
       {
-        MessageBox.Show("This form has invalid data.  Please check it and try again");
+        MessageBox.Show("This member has invalid data.  Please check it and try again");
       }
     }
 
-    private bool ValidateForm()
+    private bool ValidateMember()
     {
       if ( firstNameTextBox.Text.Length == 0 )
       {
@@ -131,18 +131,40 @@ namespace TrackerUI
       }
     }
 
+    private bool ValidateForm()
+    {
+      if (teamNameTextBox.Text == "")
+      {
+        return false;
+      }
+
+      if (selectedTeamMembers.Count <= 0)
+      {
+        return false;
+      }
+
+      return true;
+    }
+
     private void createTeamButton_Click(object sender, EventArgs e)
     {
-      TeamModel t = new TeamModel();
+      if (ValidateForm())
+      {
+        TeamModel t = new TeamModel();
 
-      t.TeamName = teamNameTextBox.Text;
-      t.TeamMembers = selectedTeamMembers;
+        t.TeamName = teamNameTextBox.Text;
+        t.TeamMembers = selectedTeamMembers;
 
-      GlobalConfig.Connection.CreateTeam(t);
+        GlobalConfig.Connection.CreateTeam(t);
 
-      callingForm.TeamComplete(t);
+        callingForm.TeamComplete(t);
 
-      Close();
+        Close();
+      }
+      else
+      {
+        MessageBox.Show("This form has invalid data.  Please check it and try again");
+      }
     }
   }
 }

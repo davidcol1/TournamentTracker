@@ -30,7 +30,7 @@ begin
   inner join MatchupEntries me
   on me.MatchupId = m.id
   inner join Teams t
-  on t.id = me.TeamCompeteingId
+  on t.id = me.TeamCompetingId
   inner join TournamentEntries te
   on te.TeamId = t.Id
   and te.TournamentId = @TournamentId
@@ -272,6 +272,45 @@ begin
 
   insert into TournamentPrizes (TournamentId, PrizeId)
   values (@TournamentId, @PrizeId)
+
+  select @id = SCOPE_IDENTITY();
+end
+go
+
+if object_id('spMatchups_Insert', 'P') is not null
+  drop proc spMatchups_Insert
+go
+
+create procedure spMatchups_Insert
+  @TournamentId int,
+  @MatchupRound int,
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into Matchups (TournamentId, MatchupRound)
+  values (@TournamentId, @MatchupRound)
+
+  select @id = SCOPE_IDENTITY();
+end
+go
+
+if object_id('spMatchupEntries_Insert', 'P') is not null
+  drop proc spMatchupEntries_Insert
+go
+
+create procedure spMatchupEntries_Insert
+  @MatchupId int,
+  @ParentMatchupId int,
+  @TeamCompetingId int,
+  @id int = 0 output
+as
+begin
+  set nocount on
+
+  insert into MatchupEntries (MatchupId, ParentMatchupId, TeamCompetingId)
+  values (@MatchupId, @ParentMatchupId, @TeamCompetingId)
 
   select @id = SCOPE_IDENTITY();
 end

@@ -27,7 +27,8 @@ go
 
 create table Matchups (
 id int identity (1,1) not null primary key,
-WinnerId int not null,
+TournamentId int not null,
+WinnerId int null,
 MatchupRound int not null,
 foreign key (WinnerId) references Teams(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -37,11 +38,11 @@ create table MatchupEntries (
 id int identity (1,1) not null primary key,
 MatchupId int not null,
 ParentMatchupId int null,
-TeamCompeteingId int null,
+TeamCompetingId int null,
 Score float null,
 foreign key (MatchupId) references Matchups (id) ON DELETE CASCADE ON UPDATE CASCADE,
 foreign key (ParentMatchupId) references Matchups (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-foreign key (TeamCompeteingId) references Teams (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+foreign key (TeamCompetingId) references Teams (id) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 go
 

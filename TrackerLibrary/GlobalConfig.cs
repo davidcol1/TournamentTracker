@@ -10,6 +10,13 @@ namespace TrackerLibrary
 {
   public static class GlobalConfig
   {
+    public const string PrizesFile = "PrizeModels.csv";
+    public const string PeopleFile = "PersonModels.csv";
+    public const string TeamsFile = "TeamModels.csv";
+    public const string TournamentsFile = "TournamentModels.csv";
+    public const string MatchUpsFile = "MatchUpModels.csv";
+    public const string MatchUpEntriesFile = "MatchUpEntryModels.csv";
+
     public static IDataConnection Connection { get; private set; }
 
     public static void InitializeConnections(DatabaseType db)

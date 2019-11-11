@@ -1,20 +1,49 @@
---select * from TournamentPrizes;
+--select 'TournamentPrizes' TournamentPrizes, * from TournamentPrizes;
 
---select * from Prizes;
+--select 'Prizes' Prizes, * from Prizes;
 
---select * from TournamentEntries;
+--select 'TournamentEntries' TournamentEntries, * from TournamentEntries;
 
---select * from Tournaments;
+--select 'Tournaments' Tournaments, * from Tournaments;
 
---select * from MatchupEntries;
+--select 'MatchupEntries' MatchupEntries, * from MatchupEntries;
 
---select * from Matchups;
+--select 'Matchups' Matchups, * from Matchups;
 
---select * from TeamMembers;
+--select 'TeamMembers' TeamMembers, * from TeamMembers;
 
---select * from People;
+--select 'People' People, * from People;
 
---select * from Teams;
+--select 'Teams' Teams, * from Teams;
+
+/**************************DANGER BELOW**************************/
+
+----delete from TournamentPrizes;
+----go
+
+----delete from Prizes;
+----go
+
+----delete from TournamentEntries;
+----go
+
+----delete from Tournaments;
+----go
+
+----delete from MatchupEntries;
+----go
+
+----delete from Matchups;
+----go
+
+----delete from TeamMembers;
+----go
+
+----delete from People;
+----go
+
+----delete from Teams;
+----go
 
 /**************************DANGER BELOW**************************/
 

@@ -1,3 +1,6 @@
+use Tournaments;
+go
+
 --select 'TournamentPrizes' TournamentPrizes, * from TournamentPrizes;
 
 --select 'Prizes' Prizes, * from Prizes;

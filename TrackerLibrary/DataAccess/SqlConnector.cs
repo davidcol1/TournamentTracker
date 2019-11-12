@@ -199,6 +199,65 @@ namespace TrackerLibrary.DataAccess
 
     }
 
+    public List<TournamentModel> GetTournament_All()
+    {
+      List<TournamentModel> output;
+      using (IDbConnection connection = new SqlConnection(GlobalConfig.CnnString(db)))
+      {
+        output = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
+
+        foreach ( TournamentModel t in output)
+        {
+          var p = new DynamicParameters();
+          p.Add("@TournamentId", t.Id);
+
+          // Populate Prizes
+          t.Prizes = connection.Query<PrizeModel>("dbo.spPrizes_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+
+          // Populate Teams
+          t.EnteredTeams = connection.Query<TeamModel>("dbo.spTeams_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+
+          foreach (var team in t.EnteredTeams)
+          {
+            p = new DynamicParameters();
+            p.Add("@TeamId", team.Id);
+
+            team.TeamMembers = connection.Query<PersonModel>("dbo.spTeamMembers_GetByTeam", p, commandType: CommandType.StoredProcedure).ToList();
+          }
+
+          p = new DynamicParameters();
+          p.Add("@TournamentId", t.Id);
+          // Populate Rounds
+          List<MatchupModel> matchups = connection.Query<MatchupModel>("dbo.spMatchups_GetByTournament", p, commandType: CommandType.StoredProcedure).ToList();
+
+          foreach (MatchupModel matchup in matchups)
+          {
+            matchup.Winner = t.EnteredTeams.First(x => x.Id == matchup.WinnerId);
+
+            p = new DynamicParameters();
+            p.Add("@MatchupId", matchup.Id);
+
+            matchup.Entries = connection.Query<MatchupEntryModel>( "dbo.spMatchupEntries_GetByMatchup", p, commandType: CommandType.StoredProcedure ).ToList();
+
+            foreach ( MatchupEntryModel me in matchup.Entries)
+            {
+              if ( me.TeamCompetingId > 0 )
+              {
+                me.TeamCompeting = t.EnteredTeams.First( x => x.Id == me.TeamCompetingId );
+              }
+
+              if (me.ParentMatchupId > 0)
+              {
+                me.ParentMatchup = matchups.First( x => x.Id == me.ParentMatchupId );
+              }
+            }
+          }
+        }
+
+      }
+      return output;
+    }
+
     public List<PersonModel> GetPerson_All()
     {
       List<PersonModel> output;

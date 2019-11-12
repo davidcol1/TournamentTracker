@@ -1,3 +1,6 @@
+use Tournaments;
+go
+
 if object_id('spMatchupEntries_GetByMatchup', 'P') is not null
   drop proc spMatchupEntries_GetByMatchup
 go
@@ -27,13 +30,7 @@ begin
 
   select m.*
   from Matchups m
-  inner join MatchupEntries me
-  on me.MatchupId = m.id
-  inner join Teams t
-  on t.id = me.TeamCompetingId
-  inner join TournamentEntries te
-  on te.TeamId = t.Id
-  and te.TournamentId = @TournamentId
+  where m.TournamentId = @TournamentId
 
 end
 go
@@ -122,6 +119,7 @@ begin
 
   select *
   from Tournaments
+  where IsActive = 1
 
 end
 go

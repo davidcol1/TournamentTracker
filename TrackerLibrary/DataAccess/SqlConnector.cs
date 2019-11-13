@@ -205,10 +205,11 @@ namespace TrackerLibrary.DataAccess
       using (IDbConnection connection = new SqlConnection(GlobalConfig.CnnString(db)))
       {
         output = connection.Query<TournamentModel>("dbo.spTournaments_GetAll").ToList();
+        var p = new DynamicParameters();
 
         foreach ( TournamentModel t in output)
         {
-          var p = new DynamicParameters();
+          p = new DynamicParameters();
           p.Add("@TournamentId", t.Id);
 
           // Populate Prizes
@@ -232,7 +233,7 @@ namespace TrackerLibrary.DataAccess
 
           foreach (MatchupModel matchup in matchups)
           {
-            matchup.Winner = t.EnteredTeams.First(x => x.Id == matchup.WinnerId);
+            matchup.Winner = t.EnteredTeams.FirstOrDefault(x => x.Id == matchup.WinnerId);
 
             p = new DynamicParameters();
             p.Add("@MatchupId", matchup.Id);
@@ -252,8 +253,23 @@ namespace TrackerLibrary.DataAccess
               }
             }
           }
-        }
+          // List<List<MatchupModel>>
+          List<MatchupModel> currRow = new List<MatchupModel>();
+          int currRound = 1;
+          matchups.OrderBy(x => x.MatchupRound);
 
+          foreach (MatchupModel matchup in matchups)
+          {
+            if (matchup.MatchupRound > currRound)
+            {
+              t.Rounds.Add(currRow);
+              currRow = new List<MatchupModel>();
+              currRound++;
+            }
+            currRow.Add(matchup);
+          }
+          t.Rounds.Add(currRow);
+        }
       }
       return output;
     }

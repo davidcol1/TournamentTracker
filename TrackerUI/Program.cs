@@ -21,9 +21,7 @@ namespace TrackerUI
       // Initialize the database connctions
       GlobalConfig.InitializeConnections(DatabaseType.TextFile);
 
-      Application.Run(new CreateTournamentForm());
-
-      //Application.Run(new TournamentDashboardForm());
+      Application.Run(new TournamentDashboardForm());
     }
   }
 }

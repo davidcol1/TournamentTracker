@@ -57,7 +57,10 @@ namespace TrackerLibrary.DataAccess
 
     public List<TournamentModel> GetTournament_All()
     {
-      throw new NotImplementedException();
+      return GlobalConfig.TournamentsFile
+        .FullFilePath()
+        .LoadFile()
+        .ConvertToTournamentModels();
     }
 
     public List<PersonModel> GetPerson_All()

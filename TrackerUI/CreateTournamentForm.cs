@@ -110,7 +110,7 @@ namespace TrackerUI
     {
       // Call the CreatePrizeForm
       CreatePrizeForm frm = new CreatePrizeForm(this);
-      frm.Show();
+      frm.ShowDialog();
     }
 
     public void PrizeComplete(PrizeModel model)
@@ -131,7 +131,7 @@ namespace TrackerUI
     {
       // Call the CreatePrizeForm
       CreateTeamForm frm = new CreateTeamForm(this);
-      frm.Show();
+      frm.ShowDialog();
     }
 
     private void removeSelectedPlayerButton_Click(object sender, EventArgs e)

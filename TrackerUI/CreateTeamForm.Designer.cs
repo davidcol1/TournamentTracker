@@ -284,6 +284,7 @@
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
       this.Name = "CreateTeamForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "Create Team";
       this.addNewMemberGroupBox.ResumeLayout(false);
       this.addNewMemberGroupBox.PerformLayout();

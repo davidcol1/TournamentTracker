@@ -80,6 +80,7 @@
       this.loadTournamentButton.TabIndex = 23;
       this.loadTournamentButton.Text = "Load Tournament";
       this.loadTournamentButton.UseVisualStyleBackColor = true;
+      this.loadTournamentButton.Click += new System.EventHandler(this.loadTournamentButton_Click);
       // 
       // createTournamentButton
       // 
@@ -112,6 +113,7 @@
       this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
       this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
       this.Name = "TournamentDashboardForm";
+      this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
       this.Text = "Tournament Dashboard";
       this.ResumeLayout(false);
       this.PerformLayout();

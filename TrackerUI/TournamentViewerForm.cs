@@ -14,14 +14,15 @@ namespace TrackerUI
   public partial class TournamentViewerForm : Form
   {
     private TournamentModel tournament;
-    private List<int> rounds = new List<int>();
-    private List<MatchupModel> selectedMatchups = new List<MatchupModel>();
+    private BindingList<int> rounds = new BindingList<int>();
+    private BindingList<MatchupModel> selectedMatchups = new BindingList<MatchupModel>();
 
     public TournamentViewerForm(TournamentModel tournamentModel)
     {
       InitializeComponent();
       tournament = tournamentModel;
       LoadFormData();
+      WireUpLists();
       LoadRounds();
     }
 
@@ -32,11 +33,11 @@ namespace TrackerUI
 
     private void LoadRounds()
     {
-      rounds = new List<int>();
+      rounds.Clear();
 
       rounds.Add(1);
       int currRound = 1;
-      foreach (List<MatchupModel> matchups in tournament.Rounds)
+      foreach (List<MatchupModel> matchups in tournament.Rounds.OrderBy(x => x.First().MatchupRound ))
       {
         if (matchups.First().MatchupRound > currRound)
         {
@@ -44,66 +45,62 @@ namespace TrackerUI
           rounds.Add(currRound);
         }
       }
+      LoadMatchups(1);
 
-      WireUpRoundsList();
     }
 
-    private void WireUpMatchupsLists()
+    private void WireUpLists()
     {
-      matchupListBox.DataSource = null;
+      roundComboBox.DataSource = rounds;
+
       matchupListBox.DataSource = selectedMatchups;
       matchupListBox.DisplayMember = "DisplayName";
     }
 
-    private void WireUpRoundsList()
-    {
-      roundComboBox.DataSource = null;
-      roundComboBox.DataSource = rounds;
-
-    }
-
     private void roundComboBox_SelectedIndexChanged(object sender, EventArgs e)
     {
-      LoadMatchups();
+      LoadMatchups((int)roundComboBox.SelectedItem);
     }
 
-    private void LoadMatchups()
+    private void LoadMatchups(int round)
     {
-      int round = (int)roundComboBox.SelectedItem;
       foreach (List<MatchupModel> matchups in tournament.Rounds)
       {
         if (matchups.First().MatchupRound == round)
         {
-          selectedMatchups = matchups;
+          selectedMatchups.Clear();
+          foreach (MatchupModel m in matchups.OrderBy(x => x.DisplayName))
+          {
+            selectedMatchups.Add(m);
+          }
           break;
         }
       }
-      WireUpMatchupsLists();
+      LoadScoresFromMatchup(selectedMatchups.First());
     }
 
     private void matchupListBox_SelectedIndexChanged(object sender, EventArgs e)
     {
-      LoadScoresFromMatchup();
+      LoadScoresFromMatchup((MatchupModel)matchupListBox.SelectedItem);
     }
 
-    private void LoadScoresFromMatchup()
+    private void LoadScoresFromMatchup(MatchupModel m)
     {
-      MatchupModel m = ( MatchupModel ) matchupListBox.SelectedItem;
 
-      if ( m != null )
+      if (m != null)
       {
-        List<MatchupEntryModel> sortedList = m.Entries
-                                              .Where( x => x.TeamCompeting != null )
-                                              .OrderBy( x => x.TeamCompeting.TeamName ).ToList();
+        List<MatchupEntryModel> sortedList = m.Entries.OrderByDescending(x => x.TeamCompeting != null
+                                                                                ? x.TeamCompeting.TeamName
+                                                                                : string.Empty).ToList();
 
-        for ( int i = 0; i < sortedList.Count(); i++ )
+        for (int i = 0; i < sortedList.Count(); i++)
         {
-          if ( i == 0 )
+          if (i == 0)
           {
-            if ( m.Entries[ 0 ].TeamCompeting != null )
+            if (m.Entries[0].TeamCompeting != null)
             {
-              teamOneNameLabel.Text = m.Entries[ 0 ].TeamCompeting.TeamName;
-              teamOneScoreTextBox.Text = sortedList[ 0 ].Score.ToString();
+              teamOneNameLabel.Text = m.Entries[0].TeamCompeting.TeamName;
+              teamOneScoreTextBox.Text = sortedList[0].Score.ToString();
 
               teamTwoNameLabel.Text = "<Bye>";
               teamTwoScoreTextBox.Text = "";
@@ -115,12 +112,12 @@ namespace TrackerUI
             }
           }
 
-          if ( i == 1 )
+          if (i == 1)
           {
-            if ( m.Entries[ 0 ].TeamCompeting != null )
+            if (m.Entries[0].TeamCompeting != null)
             {
-              teamTwoNameLabel.Text = m.Entries[ 1 ].TeamCompeting.TeamName;
-              teamTwoScoreTextBox.Text = sortedList[ 1 ].Score.ToString();
+              teamTwoNameLabel.Text = m.Entries[1].TeamCompeting.TeamName;
+              teamTwoScoreTextBox.Text = sortedList[1].Score.ToString();
             }
             else
             {

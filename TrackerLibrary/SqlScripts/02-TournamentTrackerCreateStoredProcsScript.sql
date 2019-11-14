@@ -313,3 +313,41 @@ begin
   select @id = SCOPE_IDENTITY();
 end
 go
+
+if object_id('spMatchups_Update', 'P') is not null
+  drop proc spMatchups_Update
+go
+
+create procedure spMatchups_Update
+  @id int,
+  @WinnerId int
+as
+begin
+  set nocount on
+
+  update Matchups
+  set WinnerId = @WinnerId
+  where id = @id
+
+end
+go
+
+if object_id('spMatchupEntries_Update', 'P') is not null
+  drop proc spMatchupEntries_Update
+go
+
+create procedure spMatchupEntries_Update
+  @id int,
+  @TeamCompetingId int = null,
+  @Score float = null
+as
+begin
+  set nocount on
+
+  update MatchupEntries
+  set TeamCompetingId = @TeamCompetingId
+  , score = @Score
+  where id = @id
+
+end
+go

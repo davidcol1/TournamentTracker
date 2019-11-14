@@ -114,5 +114,10 @@ namespace TrackerLibrary.DataAccess
 
       tournaments.SaveToTournamentFile();
     }
+
+    public void UpdateMatchup(MatchupModel model)
+    {
+      model.UpdateMatchupToFile();
+    }
   }
 }

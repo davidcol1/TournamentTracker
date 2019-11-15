@@ -51,38 +51,9 @@ namespace TrackerUI
       teamMembersListBox.DisplayMember = "FullName";
     }
 
-    private void createMemberButton_Click(object sender, EventArgs e)
-    {
-      if ( ValidateMember() )
-      {
-        PersonModel p = new PersonModel();
-
-        p.FirstName = firstNameTextBox.Text;
-        p.LastName = lastNameTextBox.Text;
-        p.EmailAddress = emailAddrTextBox.Text;
-        p.CellPhoneNumber = cellPhoneTextBox.Text;
-
-        p = GlobalConfig.Connection.CreatePerson( p );
-
-        selectedTeamMembers.Add(p);
-
-        WireUpLists();
-
-        firstNameTextBox.Text = "";
-        lastNameTextBox.Text = "";
-        emailAddrTextBox.Text = "";
-        cellPhoneTextBox.Text = "";
-
-      }
-      else
-      {
-        MessageBox.Show("This member has invalid data.  Please check it and try again");
-      }
-    }
-
     private bool ValidateMember()
     {
-      if ( firstNameTextBox.Text.Length == 0 )
+      if (firstNameTextBox.Text.Length == 0)
       {
         return false;
       }
@@ -103,6 +74,50 @@ namespace TrackerUI
       }
 
       return true;
+    }
+
+    private bool ValidateForm()
+    {
+      if (teamNameTextBox.Text == "")
+      {
+        return false;
+      }
+
+      if (selectedTeamMembers.Count <= 0)
+      {
+        return false;
+      }
+
+      return true;
+    }
+
+    private void createMemberButton_Click(object sender, EventArgs e)
+    {
+      if ( ValidateMember() )
+      {
+        PersonModel p = new PersonModel();
+
+        p.FirstName = firstNameTextBox.Text;
+        p.LastName = lastNameTextBox.Text;
+        p.EmailAddress = emailAddrTextBox.Text;
+        p.CellPhoneNumber = cellPhoneTextBox.Text;
+
+        GlobalConfig.Connection.CreatePerson( p );
+
+        selectedTeamMembers.Add(p);
+
+        WireUpLists();
+
+        firstNameTextBox.Text = "";
+        lastNameTextBox.Text = "";
+        emailAddrTextBox.Text = "";
+        cellPhoneTextBox.Text = "";
+
+      }
+      else
+      {
+        MessageBox.Show("This member has invalid data.  Please check it and try again");
+      }
     }
 
     private void addTeamMemberButton_Click(object sender, EventArgs e)
@@ -129,21 +144,6 @@ namespace TrackerUI
 
         WireUpLists(); 
       }
-    }
-
-    private bool ValidateForm()
-    {
-      if (teamNameTextBox.Text == "")
-      {
-        return false;
-      }
-
-      if (selectedTeamMembers.Count <= 0)
-      {
-        return false;
-      }
-
-      return true;
     }
 
     private void createTeamButton_Click(object sender, EventArgs e)

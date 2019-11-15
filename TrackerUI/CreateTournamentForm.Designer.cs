@@ -151,7 +151,6 @@
       this.tournamentTeamsListBox.Name = "tournamentTeamsListBox";
       this.tournamentTeamsListBox.Size = new System.Drawing.Size(283, 182);
       this.tournamentTeamsListBox.TabIndex = 20;
-      this.tournamentTeamsListBox.SelectedIndexChanged += new System.EventHandler(this.tournamentPlayersListBox_SelectedIndexChanged);
       // 
       // teamsPlayersLabel
       // 
@@ -278,7 +277,6 @@
       this.Name = "CreateTournamentForm";
       this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
       this.Text = "Create Tournament";
-      this.Load += new System.EventHandler(this.CreateTournamentForm_Load);
       this.ResumeLayout(false);
       this.PerformLayout();
 

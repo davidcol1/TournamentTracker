@@ -57,11 +57,6 @@ namespace TrackerUI
       matchupListBox.DisplayMember = "DisplayName";
     }
 
-    private void roundComboBox_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      LoadMatchups((int)roundComboBox.SelectedItem);
-    }
-
     private void LoadMatchups(int round)
     {
       foreach (List<MatchupModel> matchups in tournament.Rounds)
@@ -81,7 +76,7 @@ namespace TrackerUI
       }
       if (selectedMatchups.Count > 0)
       {
-        LoadScoresFromMatchup(selectedMatchups.First()); 
+        LoadScoresFromMatchup(selectedMatchups.First());
       }
 
       DisplayMatchupInfo();
@@ -99,12 +94,7 @@ namespace TrackerUI
       teamTwoScoreTextBox.Visible = isVisible;
       vsLabel.Visible = isVisible;
       scoreButton.Visible = isVisible;
-      
-    }
 
-    private void matchupListBox_SelectedIndexChanged(object sender, EventArgs e)
-    {
-      LoadScoresFromMatchup((MatchupModel)matchupListBox.SelectedItem);
     }
 
     private void LoadScoresFromMatchup(MatchupModel m)
@@ -152,11 +142,6 @@ namespace TrackerUI
       }
     }
 
-    private void unplayedOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
-    {
-      LoadMatchups((int)roundComboBox.SelectedItem);
-    }
-
     private void scoreButton_Click(object sender, EventArgs e)
     {
       MatchupModel m = (MatchupModel)matchupListBox.SelectedItem;
@@ -184,7 +169,6 @@ namespace TrackerUI
               MessageBox.Show("Please enter a valid score for team 1.");
               return;
             }
-
           }
         }
 
@@ -242,6 +226,21 @@ namespace TrackerUI
       GlobalConfig.Connection.UpdateMatchup(m);
 
       LoadMatchups((int)roundComboBox.SelectedItem);
+    }
+
+    private void unplayedOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+    {
+      LoadMatchups((int)roundComboBox.SelectedItem);
+    }
+
+    private void roundComboBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      LoadMatchups((int)roundComboBox.SelectedItem);
+    }
+
+    private void matchupListBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+      LoadScoresFromMatchup((MatchupModel)matchupListBox.SelectedItem);
     }
   }
 }

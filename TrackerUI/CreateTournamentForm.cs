@@ -25,6 +25,20 @@ namespace TrackerUI
       WireUpLists();
     }
 
+    public void PrizeComplete(PrizeModel model)
+    {
+      // Get back from the form a PrizeModel
+      // Take the PrizeModel and put it into our list of selected prizes
+      selectedPrizes.Add(model);
+      WireUpLists();
+    }
+
+    public void TeamComplete(TeamModel model)
+    {
+      selectedTeams.Add(model);
+      WireUpLists();
+    }
+
     private void WireUpLists()
     {
       selectTeamComboBox.DataSource = null;
@@ -41,16 +55,6 @@ namespace TrackerUI
 
       prizesListBox.DataSource = selectedPrizes;
       prizesListBox.DisplayMember = "PlaceName";
-    }
-
-    private void CreateTournamentForm_Load(object sender, EventArgs e)
-    {
-
-    }
-
-    private void tournamentPlayersListBox_SelectedIndexChanged(object sender, EventArgs e)
-    {
-
     }
 
     private void addTeamButton_Click(object sender, EventArgs e)
@@ -113,27 +117,6 @@ namespace TrackerUI
       frm.ShowDialog();
     }
 
-    public void PrizeComplete(PrizeModel model)
-    {
-      // Get back from the form a PrizeModel
-      // Take the PrizeModel and put it into our list of selected prizes
-      selectedPrizes.Add(model);
-      WireUpLists();
-    }
-
-    public void TeamComplete(TeamModel model)
-    {
-      selectedTeams.Add(model);
-      WireUpLists();
-    }
-
-    private void createNewTeamLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-    {
-      // Call the CreatePrizeForm
-      CreateTeamForm frm = new CreateTeamForm(this);
-      frm.ShowDialog();
-    }
-
     private void removeSelectedPlayerButton_Click(object sender, EventArgs e)
     {
       TeamModel t = (TeamModel)tournamentTeamsListBox.SelectedItem;
@@ -157,6 +140,13 @@ namespace TrackerUI
 
         WireUpLists();
       }
+    }
+
+    private void createNewTeamLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+      // Call the CreatePrizeForm
+      CreateTeamForm frm = new CreateTeamForm(this);
+      frm.ShowDialog();
     }
   }
 }

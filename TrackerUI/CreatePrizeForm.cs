@@ -23,33 +23,6 @@ namespace TrackerUI
       callingForm = caller;
     }
 
-    private void createPrizeButton_Click(object sender, EventArgs e)
-    {
-      if (ValidateForm())
-      {
-        PrizeModel model = new PrizeModel(
-          placeNameTextBox.Text,
-          placeNumberTextBox.Text,
-          prizeAmountTextBox.Text,
-          prizePercentageTextBox.Text);
-
-        GlobalConfig.Connection.CreatePrize(model);
-
-        callingForm.PrizeComplete(model);
-
-        Close();
-
-        //placeNameTextBox.Text = "";
-        //placeNumberTextBox.Text = "";
-        //prizeAmountTextBox.Text = "0";
-        //prizePercentageTextBox.Text = "0";
-      }
-      else
-      {
-        MessageBox.Show("This form has invalid data.  Please check it and try again");
-      }
-    }
-
     private bool ValidateForm()
     {
       bool output = true;
@@ -96,5 +69,33 @@ namespace TrackerUI
 
       return output;
     }
+
+    private void createPrizeButton_Click(object sender, EventArgs e)
+    {
+      if (ValidateForm())
+      {
+        PrizeModel model = new PrizeModel(
+          placeNameTextBox.Text,
+          placeNumberTextBox.Text,
+          prizeAmountTextBox.Text,
+          prizePercentageTextBox.Text);
+
+        GlobalConfig.Connection.CreatePrize(model);
+
+        callingForm.PrizeComplete(model);
+
+        Close();
+
+        //placeNameTextBox.Text = "";
+        //placeNumberTextBox.Text = "";
+        //prizeAmountTextBox.Text = "0";
+        //prizePercentageTextBox.Text = "0";
+      }
+      else
+      {
+        MessageBox.Show("This form has invalid data.  Please check it and try again");
+      }
+    }
+
   }
 }

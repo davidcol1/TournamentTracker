@@ -21,6 +21,28 @@ go
 
 /**************************DANGER BELOW**************************/
 
+--USE master
+--GO
+---- Create Snapshot Database
+--CREATE DATABASE TournamentsSnapshot ON
+--(Name ='Tournaments',
+--FileName='C:\Program Files\Microsoft SQL Server\MSSQL14.MSSQLSERVER\MSSQL\DATA\TournamentsSnapshot.snap')
+--AS SNAPSHOT OF Tournaments;
+--GO
+
+--USE master
+--GO
+--RESTORE DATABASE Tournaments
+--FROM DATABASE_SNAPSHOT = 'TournamentsSnapshot'
+
+--USE master
+--GO
+---- Clean up
+--DROP DATABASE TournamentsSnapshot;
+--GO
+
+/**************************DANGER BELOW**************************/
+
 ----delete from TournamentPrizes;
 ----go
 

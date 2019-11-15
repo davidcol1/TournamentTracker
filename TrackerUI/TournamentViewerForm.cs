@@ -112,7 +112,7 @@ namespace TrackerUI
           {
             if (m.Entries[0].TeamCompeting != null)
             {
-              teamOneNameLabel.Text = m.Entries[0].TeamCompeting.TeamName;
+              teamOneNameLabel.Text = sortedList[0].TeamCompeting.TeamName;
               teamOneScoreTextBox.Text = sortedList[0].Score.ToString();
 
               teamTwoNameLabel.Text = "<Bye>";
@@ -127,9 +127,9 @@ namespace TrackerUI
 
           if (i == 1)
           {
-            if (m.Entries[0].TeamCompeting != null)
+            if (m.Entries[1].TeamCompeting != null)
             {
-              teamTwoNameLabel.Text = m.Entries[1].TeamCompeting.TeamName;
+              teamTwoNameLabel.Text = sortedList[1].TeamCompeting.TeamName;
               teamTwoScoreTextBox.Text = sortedList[1].Score.ToString();
             }
             else
@@ -193,11 +193,11 @@ namespace TrackerUI
 
       if (teamOneScore > teamTwoScore || sortedList.Count == 1)
       {
-        m.Winner = m.Entries[0].TeamCompeting;
+        m.Winner = sortedList[0].TeamCompeting;
       }
       else if (teamTwoScore > teamOneScore)
       {
-        m.Winner = m.Entries[1].TeamCompeting;
+        m.Winner = sortedList[1].TeamCompeting;
       }
       else
       {

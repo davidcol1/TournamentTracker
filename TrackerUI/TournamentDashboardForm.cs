@@ -12,9 +12,10 @@ using TrackerLibrary.Model;
 
 namespace TrackerUI
 {
-  public partial class TournamentDashboardForm : Form
+  public partial class TournamentDashboardForm : Form, ITournamentRequester
   {
-    private List<TournamentModel> tournaments = GlobalConfig.Connection.GetTournament_All();
+    private BindingList<TournamentModel> tournaments = new BindingList<TournamentModel>(GlobalConfig.Connection.GetTournament_All());
+    private TournamentModel createdTournament;
 
     public TournamentDashboardForm()
     {
@@ -30,8 +31,19 @@ namespace TrackerUI
 
     private void createTournamentButton_Click(object sender, EventArgs e)
     {
-      CreateTournamentForm frm = new CreateTournamentForm();
-      frm.ShowDialog();
+      using (var frm = new CreateTournamentForm(this))
+      {
+        frm.ShowDialog();
+      }
+
+      if (createdTournament != null)
+      {
+        using (var frm = new TournamentViewerForm(createdTournament))
+        {
+          frm.ShowDialog();
+        }
+      }
+
     }
 
     private void loadTournamentButton_Click(object sender, EventArgs e)
@@ -46,6 +58,12 @@ namespace TrackerUI
       {
         MessageBox.Show("Please select a tournament to load");
       }
+    }
+
+    public void TournamentComplete(TournamentModel model)
+    {
+      createdTournament = model;
+      tournaments.Add(model);
     }
   }
 }

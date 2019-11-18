@@ -115,21 +115,117 @@ namespace TrackerLibrary
     {
       int output = 1;
 
-      var result = from sublist in model.Rounds
-                   select new { myMax = sublist.Max(x => x.MatchupRound) };
-
-      int myMax = result.Max(x => x.myMax);
-
       foreach (List<MatchupModel> round in model.Rounds)
       {
         if (round.All(x => x.Winner != null))
         {
-          if (output + 1 <= myMax)
-          {
             output += 1;
+        }
+        else
+        {
+          return output;
+        }
+      }
+
+      CompleteTournament(model);
+
+      return output - 1;
+    }
+
+    private static void CompleteTournament(TournamentModel model)
+    {
+      model.IsActive = false;
+      GlobalConfig.Connection.CompleteTournament(model);
+
+      // find the max round from all the rounds
+      var result = from sublist in model.Rounds
+                   select new { myMax = sublist.Max(x => x.MatchupRound) };
+      int myMax = result.Max(x => x.myMax);
+
+      // Rounds is list of list. 
+      // Get the first list that contains the list of matchups where one of them has max round as round
+      // get that first matchup of that matchup list (there will always be only one)
+      TeamModel winner = model.Rounds.Where(x => x.First().MatchupRound == myMax)
+        .First().First().Winner;
+      TeamModel runnerUp = model.Rounds.Where(x => x.First().MatchupRound == myMax)
+        .First().First().Entries.Where(x => x.TeamCompeting != winner).First().TeamCompeting;
+
+      decimal winnerAmount = 0;
+      decimal runnerUpAmount = 0;
+
+      if (model.Prizes.Count > 0)
+      {
+        decimal totalIncome = model.EnteredTeams.Count * model.EntryFee;
+
+        PrizeModel winnerPrize = model.Prizes.Where(x => x.PlaceNumber == 1).FirstOrDefault();
+        PrizeModel runnerUpPrize = model.Prizes.Where(x => x.PlaceNumber == 2).FirstOrDefault();
+
+        if (winnerPrize != null)
+        {
+          winnerAmount = winnerPrize.calculatePrizePayout(totalIncome);
+        }
+
+        if (runnerUpPrize != null)
+        {
+          runnerUpAmount = runnerUpPrize.calculatePrizePayout(totalIncome);
+        }
+      }
+
+      // Send email to all tournament
+      string subject = "";
+      StringBuilder body = new StringBuilder();
+
+
+      subject = $"In {model.TournamentName}, {winner.TeamName}, has won!";
+
+      body.AppendLine("<h1>We have a winner!</h1>");
+      body.AppendLine("<p>Congratulations to our winner on a great tournament </p>");
+      body.AppendLine("<br />");
+
+      if (winnerAmount > 0)
+      {
+        body.AppendLine($"<p>{winner.TeamName} will recieve ${winnerAmount}.</p>");
+      }
+
+      if (runnerUpAmount > 0)
+      {
+        body.AppendLine($"<p>{runnerUp.TeamName} will recieve ${runnerUpAmount}.</p>");
+      }
+
+      body.AppendLine("<p>Thanks for a great tournament everyone!</p>");
+      body.AppendLine("~Tournament Tracker");
+
+      List<string> bcc = new List<string>();
+
+      foreach (TeamModel t in model.EnteredTeams)
+      {
+        foreach (PersonModel p in t.TeamMembers)
+        {
+          if (p.EmailAddress.Length > 0)
+          {
+            bcc.Add(p.EmailAddress);
           }
         }
       }
+
+      EmailLogic.SendEmail(new List<string>(), bcc, subject, body.ToString());
+
+      model.CompleteTournament();
+    }
+
+    private static decimal calculatePrizePayout(this PrizeModel prize, decimal totalIncome)
+    {
+      decimal output = 0;
+
+      if (prize.PrizeAmount > 0)
+      {
+        output = prize.PrizeAmount;
+      }
+      else
+      {
+        output = Decimal.Multiply(totalIncome, Convert.ToDecimal(prize.PrizePercentage / 100));
+      }
+
       return output;
     }
 

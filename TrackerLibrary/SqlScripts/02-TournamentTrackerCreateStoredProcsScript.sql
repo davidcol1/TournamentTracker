@@ -351,3 +351,20 @@ begin
 
 end
 go
+
+if object_id('spTournaments_Complete', 'P') is not null
+  drop proc spTournaments_Complete
+go
+
+create procedure spTournaments_Complete
+  @id int
+as
+begin
+  set nocount on
+
+  update Tournaments
+  set IsActive = 0
+  where id = @id
+
+end
+go

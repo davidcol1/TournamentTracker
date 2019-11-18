@@ -21,10 +21,19 @@ namespace TrackerUI
     public TournamentViewerForm(TournamentModel tournamentModel)
     {
       InitializeComponent();
+
       tournament = tournamentModel;
+
+      tournament.OnTournamentComplete += Tournament_OnTournamentComplete;
+
       LoadFormData();
       WireUpLists();
       LoadRounds();
+    }
+
+    private void Tournament_OnTournamentComplete(object sender, DateTime e)
+    {
+      Close();
     }
 
     private void LoadFormData()

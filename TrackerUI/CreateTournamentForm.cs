@@ -114,6 +114,8 @@ namespace TrackerUI
 
       callingForm.TournamentComplete(tm);
 
+      tm.AlertUsersToNewRound();
+
       Close();
 
     }
